@@ -1,0 +1,17 @@
+deployment:
+  name: helm-test-productapi
+  replicaCount: "1"
+  ContainerPort: "8080"
+image: 
+  name: "vintilaterraform.azurecr.io/productapi"
+  tag: "v5"
+
+secret:
+  name: "acr-secret"
+
+
+service:
+  name: "productapi-service"
+  port: "80"
+  targetPort: "8080"
+  type: "NodePort"

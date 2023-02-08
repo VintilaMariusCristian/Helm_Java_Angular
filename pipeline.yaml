@@ -1,0 +1,19 @@
+
+pool:
+  name: Cristian
+
+steps:
+- script: |
+    cd helm_template
+    az acr login -n vintilaterraform
+
+  displayName: 'login to azure container registry'
+
+- script: |
+    ls
+    cd helm_template
+    helm package .
+    helm push first-helm-0.1.0.tgz oci://vintilaterraform.azurecr.io/helm/
+  displayName: 'package helm'
+
+

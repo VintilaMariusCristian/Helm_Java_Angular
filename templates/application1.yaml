@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+    spec:
+      containers:
+      - name: {{ .Values.deployment.name }}
+        image: {{ .Values.image.name }}:{{ .Values.image.tag }}
+        ports:
+        - containerPort: {{ .Values.deployment.ContainerPort }}
+{{- if .Values.configmap }}
+        volumeMounts:
+          - name: {{ .Values.volumemounts.name }}
+            mountPath: {{ .Values.volumemounts.path }}
+{{end}}
+
+{{- if .Values.configmap }}
+        resources:
+ {{- toYaml .Values.resources | nindent 12 }}
+      imagePullSecrets:  
+      - name: {{ .Values.secret.name }}
+{{end}}    
+
+{{- if .Values.configmap }}
+      volumes:
+         - name: {{ .Values.volumes.name }}
+           configMap:
+            name: {{ .Values.configmap.name }}
+
+{{end}}

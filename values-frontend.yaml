@@ -1,0 +1,39 @@
+deployment:
+  name: helm-test-frontend
+  replicaCount: "1"
+  ContainerPort: "8080"
+image: 
+  name: "vintilaterraform.azurecr.io/frontend"
+  tag: "v5"
+
+configmap:
+ name: "first-configmap"
+
+volumes:
+  name: "first-volume"
+
+volumemounts:
+  name: "first-volume"
+  path: /etc/nginx/conf.d/ 
+
+resources: 
+  limits:
+    cpu: 100m
+    memory: 120Mi
+  requests:
+    cpu: 100m
+    memory: 120Mi
+
+secret:
+  name: "acr-secret"
+
+ingress:
+  name: "my-ingress"
+  port: "80"
+  hostname: "aks.schrodingerpuppy.barbart.ro"
+
+service:
+  name: "frontend-service"
+  port: "80"
+  targetPort: "8080"
+  type: "NodePort"
